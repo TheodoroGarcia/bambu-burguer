@@ -11,12 +11,14 @@ export interface IUser {
 }
 
 export interface IProduct {
-  id: string;
+  id: number;
   seller_id: string;
   name: string;
   category: string;
   description: string;
   price: number;
   available_stock: number;
-  created_at: string;
+  created_at: string; 
+  images: string[];
+  quantity: number;
 }

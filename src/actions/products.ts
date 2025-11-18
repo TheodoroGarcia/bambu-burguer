@@ -26,7 +26,8 @@ export const getProductsBySellerId = async (sellerId: string) => {
     const { data, error } = await supabase
       .from("products")
       .select("*")
-      .eq("seller_id", sellerId).order("created_at", { ascending: false });
+      .eq("seller_id", sellerId)
+      .order("created_at", { ascending: false });
     if (error) {
       throw new Error(error.message);
     }
@@ -96,6 +97,32 @@ export const deleteProductById = async (productId: string) => {
     return {
       success: true,
       message: "Produto deletado com sucesso!",
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+};
+
+export const getAllProducts = async ({
+  category,
+  searchText,
+}: {
+  category?: string;
+  searchText?: string;
+}) => {
+  try {
+    const { data, error } = await supabase
+      .from("products")
+      .select("*");
+    if(error) {
+      throw new Error(error.message);
+    } 
+    return {
+      success: true,
+      data,
     };
   } catch (error: any) {
     return {

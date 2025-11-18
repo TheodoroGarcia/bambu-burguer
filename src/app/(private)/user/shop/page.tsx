@@ -1,39 +1,42 @@
-import { UserButton } from "@clerk/nextjs";
-import { currentUser } from "@clerk/nextjs/server";
+import { getAllProducts } from "@/actions/products";
+import PageTitle from "@/components/ui/page-title";
+import ProductTile from "./_components/product-tile";
+import { IProduct } from "@/interfaces";
+import { ShoppingBag } from "lucide-react";
 
 export default async function UserShopPage() {
-  const user = await currentUser();
+  const response: any = await getAllProducts({
+    category: "",
+    searchText: "",
+  });
 
-  return (
-    <div className="bg-bambu-beige min-h-screen p-5">
-      <div className="max-w-7xl mx-auto">
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-          <h1 className="text-2xl font-bold text-bambu-brown mb-4">
-            🍔 Cardápio Bambu Burger
-          </h1>
-          <div className="flex justify-between items-center">
-            <p className="text-bambu-green-dark">
-              Bem-vindo ao melhor hambúrguer da cidade!
-            </p>
-            <UserButton />
+  if (!response.success) {
+    return (
+      <div className="min-h-screen bg-bambu-beige/20 p-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-bambu-beige/30 p-12 text-center">
+            <ShoppingBag size={48} className="mx-auto text-bambu-brown/40 mb-4" />
+            <p className="text-bambu-brown/60 text-lg">Erro ao carregar produtos: {response.message}</p>
           </div>
         </div>
+      </div>
+    );
+  }
+  
+  return (
+    <div className="min-h-screen bg-bambu-beige p-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-bambu-beige/30 p-6 mb-8">
+          <PageTitle title="Cardápio" />
+          <p className="text-bambu-brown/70 mt-2">
+            Descubra nossos hambúrguers artesanais e deliciosos acompanhamentos.
+          </p>
+        </div>
 
-        <div className="bg-bambu-brown rounded-lg p-6 text-bambu-beige">
-          <h2 className="text-lg font-semibold mb-3 text-bambu-terracota">
-            Informações do Usuário
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-            <div>
-              <span className="font-medium">ID:</span> {user?.id}
-            </div>
-            <div>
-              <span className="font-medium">Email:</span> {user?.emailAddresses[0]?.emailAddress}
-            </div>
-            <div>
-              <span className="font-medium">Nome:</span> {user?.fullName}
-            </div>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+          {response.data.map((product: IProduct) => (
+            <ProductTile key={product.id} product={product} />
+          ))}
         </div>
       </div>
     </div>
