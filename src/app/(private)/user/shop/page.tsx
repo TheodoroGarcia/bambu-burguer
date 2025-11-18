@@ -19,7 +19,6 @@ export default async function UserShopPage() {
           </div>
         </div>
 
-        {/* Card de informações do usuário (temporário para debug) */}
         <div className="bg-bambu-brown rounded-lg p-6 text-bambu-beige">
           <h2 className="text-lg font-semibold mb-3 text-bambu-terracota">
             Informações do Usuário

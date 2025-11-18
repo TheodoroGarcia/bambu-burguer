@@ -83,7 +83,7 @@ export default function MenuItems({
 
   const sellerMenuItems = [
     {
-      name: "Cardápio",
+      name: "Produtos",
       route: "/seller/products",
       icon: <Hamburger size={iconsSize} />,
     },

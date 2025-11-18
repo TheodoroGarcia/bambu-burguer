@@ -9,3 +9,14 @@ export interface IUser {
   is_seller: boolean;
   created_at: string;
 }
+
+export interface IProduct {
+  id: string;
+  seller_id: string;
+  name: string;
+  category: string;
+  description: string;
+  price: number;
+  available_stock: number;
+  created_at: string;
+}
