@@ -1,4 +1,4 @@
-export const productCatergories = [{
+export const productCategories = [{
     label: 'Lanche',
     value: 'lanche',
 }, {

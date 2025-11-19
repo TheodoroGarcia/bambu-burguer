@@ -28,9 +28,7 @@ export default function ProductTile({ product }: { product: IProduct }) {
         toast.error("Estoque insuficiente para adicionar mais itens");
         return;
       }
-      
-      const itemsBefore = items.length;
-      
+            
       if (productInCart) {
         const newQuantity = quantityInCart + 1;
         updateProductQuantity(product.id.toString(), newQuantity);
@@ -65,7 +63,7 @@ export default function ProductTile({ product }: { product: IProduct }) {
   };
 
   return (
-    <div className="p-6 bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-bambu-beige/30 hover:shadow-xl transition-all duration-300 flex flex-col h-full">
+    <div className="p-6 bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-bambu-beige hover:shadow-xl transition-all duration-300 flex flex-col h-full">
       <h1 className="text-lg font-bold text-bambu-brown mb-2">{product.name}</h1>
       <hr className="my-3 border border-bambu-beige/50" />
 

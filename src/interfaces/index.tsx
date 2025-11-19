@@ -22,3 +22,12 @@ export interface IProduct {
   images: string[];
   quantity: number;
 }
+
+export interface IAddress {
+  name: string;
+  phone_number: number;
+  address: string;
+  neighborhood: string;
+  number: number;
+  id: number;
+}

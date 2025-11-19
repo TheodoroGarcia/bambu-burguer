@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -25,7 +24,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { CurrencyInput } from "@/components/ui/currency-input";
-import { productCatergories } from "@/constants";
+import { productCategories } from "@/constants";
 import { useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { uploadFileAndGetUrl } from "@/utils/file-uploads";
@@ -228,7 +227,7 @@ export default function ProductForm({
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel>Categorias</SelectLabel>
-                        {productCatergories.map((category) => (
+                        {productCategories.map((category) => (
                           <SelectItem
                             key={category.value}
                             value={category.value}

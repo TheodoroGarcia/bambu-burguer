@@ -71,7 +71,7 @@ export default function MenuItems({
     },
     {
       name: "Endereço",
-      route: "/user/address",
+      route: "/user/addresses",
       icon: <Map size={iconsSize} />,
     },
     {
