@@ -10,10 +10,12 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 import { useCartSync } from "@/hooks/useCartSync";
 import { IProduct } from "@/interfaces";
+import { useRouter } from "next/navigation";
 
 export default function UserCartPage() {
   const { user } = usersGlobalStore() as IUsersGlobalStore;
   const { items, updateProductQuantity, deleteProductFromCart } = useCartSync();
+  const router = useRouter();
 
   const deliveryFee = 4.0;
 
@@ -180,7 +182,10 @@ export default function UserCartPage() {
                       </span>
                     </div>
                   </div>
-                  <Button className="w-full bg-bambu-green hover:bg-bambu-green-dark text-white font-semibold py-3 mt-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                  <Button
+                    className="w-full bg-bambu-green hover:bg-bambu-green-dark text-white font-semibold py-3 mt-6 shadow-lg hover:shadow-xl transition-all duration-300"
+                    onClick={() => router.push("/user/checkout")}
+                  >
                     Finalizar Pedido
                   </Button>
                 </div>
