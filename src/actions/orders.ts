@@ -91,7 +91,7 @@ export const getOrderedItemsOfSeller = async (sellerId: string) => {
         )
       `)
       .eq("seller_id", sellerId)
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false, foreignTable: "orders" });
 
     if (error) {
       return {

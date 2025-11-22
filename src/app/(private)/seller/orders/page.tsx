@@ -108,6 +108,10 @@ export default function sellerOrdersPage() {
     groupedOrders[item.order_id].items.push(item);
   });
 
+  const sortedOrderEntries = Object.entries(groupedOrders).sort(([, a], [, b]) => {
+    return new Date(b.order.created_at).getTime() - new Date(a.order.created_at).getTime();
+  });
+
   const getStatusBadge = (status: string) => {
     if (status === "cancelled") {
       return <Badge variant="destructive" className="flex items-center gap-1"><X className="w-3 h-3" />Cancelado</Badge>;
@@ -232,7 +236,7 @@ export default function sellerOrdersPage() {
                   </TableCell>
                 </TableRow>
               ) : (
-                Object.entries(groupedOrders).map(([orderId, { items: orderItems, order }], index) => (
+                sortedOrderEntries.map(([orderId, { items: orderItems, order }]) => (
                   <TableRow key={orderId} className="hover:bg-bambu-beige/10 transition-colors">
                     <TableCell className="font-medium text-bambu-brown px-6 py-4">
                       <div className="flex items-center gap-2">
