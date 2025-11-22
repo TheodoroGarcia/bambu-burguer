@@ -15,6 +15,8 @@ import {
   SquareMenu,
   User2,
   UserPen,
+  Phone,
+  Leaf,
 } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { usePathname, useRouter } from "next/navigation";
@@ -22,6 +24,9 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@clerk/nextjs";
 import toast from "react-hot-toast";
+import usersGlobalStore, {
+  IUsersGlobalStore,
+} from "@/global-store/users-store";
 
 export interface MenuItensProps {
   openMenuItems: boolean;
@@ -32,6 +37,7 @@ export default function MenuItems({
   openMenuItems,
   setOpenMenuItems,
 }: MenuItensProps) {
+  const { user } = usersGlobalStore() as IUsersGlobalStore;
   const [selectedRole, setSelectedRole] = useState("user");
   const [loading, setLoading] = useState(false);
   const pathname = usePathname();
@@ -73,12 +79,7 @@ export default function MenuItems({
       name: "Endereço",
       route: "/user/addresses",
       icon: <Map size={iconsSize} />,
-    },
-    {
-      name: "Perfil",
-      route: "/user/profile",
-      icon: <User2 size={iconsSize} />,
-    },
+    }
   ];
 
   const sellerMenuItems = [
@@ -117,7 +118,7 @@ export default function MenuItems({
     },
   ];
 
-  const userRoles = [
+  let userRoles = [
     {
       name: "Usuário",
       value: "user",
@@ -125,12 +126,16 @@ export default function MenuItems({
     {
       name: "Vendedor",
       value: "seller",
-    },
-    {
-      name: "Administrador",
-      value: "admin",
-    },
+    }
   ];
+
+  if (!user.is_seller) {
+    userRoles = userRoles.filter((role) => role.value !== "seller");
+  }
+
+  if (!user.is_admin) {
+    userRoles = userRoles.filter((role) => role.value !== "admin");
+  }
 
   let menuItemsToRender = useMemo(() => {
     if (selectedRole === "user") {
@@ -148,52 +153,55 @@ export default function MenuItems({
       <SheetContent className="bg-bambu-beige border-l-4 border-bambu-brown">
         <SheetHeader className="border-b border-bambu-brown pb-4 mb-6">
           <SheetTitle className="text-bambu-brown text-xl font-bold flex items-center gap-2">
-            🍔 <span>Menu Bambu Burger</span>
+            <Hamburger className="w-6 h-6" />
+            <span>Menu Bambu Burger</span>
           </SheetTitle>
         </SheetHeader>
 
-        <div className="bg-white rounded-lg p-4 mb-6 border border-bambu-brown/20">
-          <h3 className="text-sm font-semibold text-bambu-brown mb-3 flex items-center gap-2">
-            <span>Selecione um Menu</span>
-          </h3>
-          <RadioGroup
-            defaultValue={selectedRole}
-            className="flex flex-col gap-3"
-            onValueChange={(value) => setSelectedRole(value as string)}
-          >
-            {userRoles.map((role, index) => (
-              <div
-                className={`flex items-center gap-3 p-3 rounded-lg border transition-all duration-200 cursor-pointer hover:shadow-sm ${
-                  selectedRole === role.value
-                    ? "bg-bambu-green text-white border-bambu-green-dark shadow-md"
-                    : "bg-bambu-beige border-bambu-brown/30 hover:border-bambu-green"
-                }`}
-                key={index}
-                onClick={() => setSelectedRole(role.value)}
-              >
-                <RadioGroupItem
-                  value={role.value}
-                  id={role.value}
-                  className={`${
+        {userRoles.length > 1 && (
+          <div className="bg-white rounded-lg p-4 mb-6 border border-bambu-brown/20">
+            <h3 className="text-sm font-semibold text-bambu-brown mb-3 flex items-center gap-2">
+              <span>Selecione um Menu</span>
+            </h3>
+            <RadioGroup
+              defaultValue={selectedRole}
+              className="flex flex-col gap-3"
+              onValueChange={(value) => setSelectedRole(value as string)}
+            >
+              {userRoles.map((role, index) => (
+                <div
+                  className={`flex items-center gap-3 p-3 rounded-lg border transition-all duration-200 cursor-pointer hover:shadow-sm ${
                     selectedRole === role.value
-                      ? "border-white data-[state=checked]:bg-white data-[state=checked]:text-bambu-green"
-                      : "border-bambu-brown data-[state=checked]:bg-bambu-green data-[state=checked]:border-bambu-green"
+                      ? "bg-bambu-green text-white border-bambu-green-dark shadow-md"
+                      : "bg-bambu-beige border-bambu-brown/30 hover:border-bambu-green"
                   }`}
-                />
-                <Label
-                  htmlFor={role.value}
-                  className={`font-medium cursor-pointer ${
-                    selectedRole === role.value
-                      ? "text-white"
-                      : "text-bambu-brown"
-                  }`}
+                  key={index}
+                  onClick={() => setSelectedRole(role.value)}
                 >
-                  {role.name}
-                </Label>
-              </div>
-            ))}
-          </RadioGroup>
-        </div>
+                  <RadioGroupItem
+                    value={role.value}
+                    id={role.value}
+                    className={`${
+                      selectedRole === role.value
+                        ? "border-white data-[state=checked]:bg-white data-[state=checked]:text-bambu-green"
+                        : "border-bambu-brown data-[state=checked]:bg-bambu-green data-[state=checked]:border-bambu-green"
+                    }`}
+                  />
+                  <Label
+                    htmlFor={role.value}
+                    className={`font-medium cursor-pointer ${
+                      selectedRole === role.value
+                        ? "text-white"
+                        : "text-bambu-brown"
+                    }`}
+                  >
+                    {role.name}
+                  </Label>
+                </div>
+              ))}
+            </RadioGroup>
+          </div>
+        )}
 
         <div className="flex flex-col gap-2">
           <h3 className="text-sm font-semibold text-bambu-brown mb-2 flex items-center gap-2">
@@ -224,9 +232,9 @@ export default function MenuItems({
               <span className="text-sm font-medium">{item.name}</span>
             </div>
           ))}
-          
+
           <div className="border-t border-bambu-brown/20 my-2"></div>
-          
+
           <div
             className="flex gap-4 p-4 rounded-lg cursor-pointer items-center transition-all duration-200 hover:shadow-md bg-red-50 text-red-700 hover:bg-red-600 hover:text-white border border-red-200 hover:border-red-600"
             onClick={onSignOut}
@@ -240,10 +248,26 @@ export default function MenuItems({
           </div>
         </div>
 
-        <div className="absolute bottom-6 left-6 right-6">
+        <div className="absolute bottom-6 left-6 right-6 space-y-4">
+          {!user.is_seller && (
+            <div className="bg-bambu-green/10 border border-bambu-green/20 rounded-lg p-4">
+              <p className="text-bambu-brown text-xs text-center mb-2">
+                <span className="font-semibold">Algum problema?</span>
+              </p>
+              <a 
+                href="tel:+5518999999999"
+                className="flex items-center justify-center gap-2 bg-bambu-green text-white py-2 px-3 rounded-lg font-medium text-sm hover:bg-bambu-green-dark transition-colors duration-200"
+              >
+                <Phone className="w-4 h-4" />
+                (18) 9999-9999
+              </a>
+            </div>
+          )}
+
           <div className="bg-bambu-brown rounded-lg p-4 text-center">
-            <p className="text-bambu-beige text-xs">
-              🌱 <span className="font-semibold">Bambu Burger</span>
+            <p className="text-bambu-beige text-xs flex items-center justify-center gap-2">
+              <Leaf className="w-4 h-4" />
+              <span className="font-semibold">Bambu Burger</span>
             </p>
             <p className="text-bambu-beige/80 text-xs">
               Sabor tradicional, qualidade sustentável

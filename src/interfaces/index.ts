@@ -18,7 +18,7 @@ export interface IProduct {
   description: string;
   price: number;
   available_stock: number;
-  created_at: string; 
+  created_at: string;
   images: string[];
   quantity: number;
 }
@@ -30,4 +30,22 @@ export interface IAddress {
   neighborhood: string;
   number: number;
   id: number;
+}
+
+export interface IOrderItem {
+  id: number;
+  sub_total: number;
+  tax_shipping_fee: number;
+  total: number;
+  payment_id: string;
+  order_status: string;
+  addresses: IAddress;
+  order_items: {
+    name: string;
+    price: number;
+    quantity: number;
+    total: number;
+    image: string;
+  }[];
+  created_at: string;
 }

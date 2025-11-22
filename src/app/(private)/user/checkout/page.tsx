@@ -36,7 +36,7 @@ export default function UserCheckoutPage() {
   const [paymentIntentToken, setPaymentIntentToken] = useState("");
   const [loading, setLoading] = useState(false);
   const { user } = usersGlobalStore() as IUsersGlobalStore;
-  const { items } = productsCartStore() as IProductsCartStore;
+  const { items, clearCart } = productsCartStore() as IProductsCartStore;
 
   const fetchAddresses = useCallback(async () => {
     if (!user?.id) return;
@@ -92,7 +92,7 @@ export default function UserCheckoutPage() {
           sub_total: subTotal,
           tax_shipping_fee: deliveryFee,
           total,
-          order_status: "order_placed",
+          order_status: "active",
         },
         items,
       };
@@ -101,6 +101,7 @@ export default function UserCheckoutPage() {
         toast.error("Erro ao salvar o pedido. Entre em contato com o suporte.");
         return;
       }
+      clearCart();
       toast.success("Pedido realizado com sucesso!");
       router.push("/user/orders");
     } catch (error) {

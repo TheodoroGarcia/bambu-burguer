@@ -10,26 +10,12 @@ import {
 import { useState } from "react";
 import { SignIn, SignUp } from "@clerk/nextjs";
 import { useSearchParams } from "next/navigation";
+import { Phone } from "lucide-react";
 
 export default function HomePage() {
   const [openSignInForm, setOpenSignInForm] = useState(false);
   const searchParams = useSearchParams();
   const formType = searchParams.get("formType");
-
-  const menuItems = [
-    {
-      name: "Home",
-      path: "/",
-    },
-    {
-      name: "Sobre",
-      path: "/about",
-    },
-    {
-      name: "Contato",
-      path: "/contact",
-    },
-  ];
 
   return (
     <div className="bg-bambu-beige min-h-screen">
@@ -39,15 +25,6 @@ export default function HomePage() {
         </h1>
 
         <div className="flex gap-5 items-center">
-          {menuItems.map((item, index) => (
-            <div
-              key={index}
-              className="text-sm text-bambu-beige font-bold hover:text-bambu-green cursor-pointer transition-colors duration-200"
-            >
-              {item.name}
-            </div>
-          ))}
-
           <Button
             onClick={() => setOpenSignInForm(true)}
             className="bg-bambu-green hover:bg-bambu-green-dark text-bambu-brown"
@@ -74,6 +51,24 @@ export default function HomePage() {
         </div>
         <div className="col-span-1 flex justify-center lg:justify-end">
           <img src="/logo.jpeg" className="w-auto h-80 object-contain" />
+        </div>
+      </div>
+
+      <div className="bg-bambu-brown/5 border-t border-bambu-brown/10 py-8 px-5 lg:px-20">
+        <div className="text-center">
+          <p className="text-bambu-brown text-sm">
+            <span className="font-semibold">Algum problema?</span> Entre em contato através do número
+          </p>
+          <a 
+            href="tel:+5518999999999" 
+            className="text-bambu-green-dark font-bold text-lg hover:text-bambu-green transition-colors duration-200 inline-flex items-center gap-2 mt-1"
+          >
+            <Phone className="w-5 h-5" />
+            (18) 9999-9999
+          </a>
+          <p className="text-bambu-brown/70 text-xs mt-2">
+            Atendimento: Segunda à Sexta, 9h às 18h
+          </p>
         </div>
       </div>
 

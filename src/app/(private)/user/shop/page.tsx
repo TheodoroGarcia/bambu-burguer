@@ -84,7 +84,6 @@ export default function UserShopPage() {
           </p>
         </div>
 
-        {/* Abas de categoria */}
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-bambu-beige/30 p-2 mb-8">
           <div className="flex gap-1">
             <button
@@ -98,7 +97,7 @@ export default function UserShopPage() {
               <ShoppingBag size={20} />
               Todos ({products.length})
             </button>
-            
+                 
             {productCategories.map((category) => (
               <button
                 key={category.value}
@@ -118,7 +117,6 @@ export default function UserShopPage() {
           </div>
         </div>
 
-        {/* Grid de produtos filtrados */}
         {filteredProducts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
             {filteredProducts.map((product: IProduct) => (
